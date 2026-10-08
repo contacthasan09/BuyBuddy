@@ -2,8 +2,18 @@
    BD STORE — API CLIENT
    ═══════════════════════════════════════════════════════ */
 
-const API_URL =
+const RAW_API_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+
+/**
+ * Normalize the API base URL:
+ *   - Strips trailing slashes
+ *   - Ensures it ends with /api (unless it already does)
+ */
+const API_URL = (() => {
+  const trimmed = RAW_API_URL.replace(/\/+$/, "");
+  return trimmed.endsWith("/api") ? trimmed : `${trimmed}/api`;
+})();
 
 /* ═══════════════════════════════════════════════════════
    URL RESOLVER
@@ -222,9 +232,7 @@ export const api = {
       }
     ),
 
-  /* ═══════════════════════════════════════════════════════
-     REVIEWS
-     ═══════════════════════════════════════════════════════ */
+  /* ── Reviews ──────────────────────────────────────── */
   getProductReviews: (
     productId: string,
     params?: {
