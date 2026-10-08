@@ -78,7 +78,7 @@ const STATUS_ICONS: Record<string, any> = {
   RETURNED: Package,
 };
 
-export default function TrackPage() {
+export default function TrackClient() {
   const searchParams = useSearchParams();
   const [invoice, setInvoice] = useState(searchParams?.get("invoice") || "");
   const [phone, setPhone] = useState("");
@@ -111,15 +111,26 @@ export default function TrackPage() {
   };
 
   return (
-    <div className="min-h-screen relative" style={{ background: T.bg, color: T.ink }}>
+    <div
+      className="min-h-screen relative"
+      style={{ background: T.bg, color: T.ink }}
+    >
       {/* Subtle organic grain overlay */}
       <svg
         aria-hidden
         className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.06] mix-blend-multiply"
       >
         <filter id="grain-track">
-          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" />
-          <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.6 0" />
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.9"
+            numOctaves="2"
+            stitchTiles="stitch"
+          />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.6 0"
+          />
         </filter>
         <rect width="100%" height="100%" filter="url(#grain-track)" />
       </svg>
@@ -136,16 +147,25 @@ export default function TrackPage() {
             animate="visible"
             className="max-w-2xl"
           >
-            <motion.div variants={fadeUp} className="flex items-center gap-3 mb-5">
-              <span className="h-px w-8" style={{ background: T.gold, opacity: 0.5 }} />
+            <motion.div
+              variants={fadeUp}
+              className="flex items-center gap-3 mb-5"
+            >
+              <span
+                className="h-px w-8"
+                style={{ background: T.gold, opacity: 0.5 }}
+              />
               <p
                 className="text-[9px] tracking-[0.4em] uppercase"
-                style={{ color: T.gold, fontFamily: "var(--font-fraunces), Georgia, serif" }}
+                style={{
+                  color: T.gold,
+                  fontFamily: "var(--font-fraunces), Georgia, serif",
+                }}
               >
                 Concierge · Live Tracking
               </p>
             </motion.div>
-            
+
             <motion.h1
               variants={fadeUp}
               className="leading-[0.95] tracking-[-0.02em]"
@@ -156,9 +176,12 @@ export default function TrackPage() {
                 color: T.ink,
               }}
             >
-              Track your <span className="italic font-light" style={{ color: T.wine }}>acquisition.</span>
+              Track your{" "}
+              <span className="italic font-light" style={{ color: T.wine }}>
+                acquisition.
+              </span>
             </motion.h1>
-            
+
             <motion.p
               variants={fadeUp}
               className="mt-5 max-w-md"
@@ -169,7 +192,8 @@ export default function TrackPage() {
                 color: T.inkSoft,
               }}
             >
-              Enter your Order ID and the contact number provided during checkout to view real-time status.
+              Enter your Order ID and the contact number provided during
+              checkout to view real-time status.
             </motion.p>
           </motion.div>
         </div>
@@ -321,10 +345,17 @@ export default function TrackPage() {
               }}
             >
               <div className="flex items-start gap-3">
-                <XCircle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: T.wine }} strokeWidth={1.5} />
+                <XCircle
+                  className="w-5 h-5 flex-shrink-0 mt-0.5"
+                  style={{ color: T.wine }}
+                  strokeWidth={1.5}
+                />
                 <p
                   className="text-[13px] leading-relaxed"
-                  style={{ color: T.wine, fontFamily: "var(--font-fraunces), Georgia, serif" }}
+                  style={{
+                    color: T.wine,
+                    fontFamily: "var(--font-fraunces), Georgia, serif",
+                  }}
                 >
                   {error}
                 </p>
@@ -356,18 +387,27 @@ export default function TrackPage() {
                   style={{ border: `0.5px solid ${T.gold}`, opacity: 0.15 }}
                   aria-hidden
                 />
-                
-                <div className="relative z-10 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6 pb-6" style={{ borderBottom: `1px dashed ${T.gold}30` }}>
+
+                <div
+                  className="relative z-10 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6 pb-6"
+                  style={{ borderBottom: `1px dashed ${T.gold}30` }}
+                >
                   <div>
                     <p
                       className="text-[9px] tracking-[0.35em] uppercase mb-1.5"
-                      style={{ color: T.inkSoft, fontFamily: "var(--font-fraunces), Georgia, serif" }}
+                      style={{
+                        color: T.inkSoft,
+                        fontFamily: "var(--font-fraunces), Georgia, serif",
+                      }}
                     >
                       Order Reference
                     </p>
                     <p
                       className="font-medium text-lg tabular-nums"
-                      style={{ color: T.ink, fontFamily: "var(--font-fraunces), Georgia, serif" }}
+                      style={{
+                        color: T.ink,
+                        fontFamily: "var(--font-fraunces), Georgia, serif",
+                      }}
                     >
                       {result.order.invoice}
                     </p>
@@ -375,13 +415,19 @@ export default function TrackPage() {
                   <div className="sm:text-right">
                     <p
                       className="text-[9px] tracking-[0.35em] uppercase mb-1.5"
-                      style={{ color: T.inkSoft, fontFamily: "var(--font-fraunces), Georgia, serif" }}
+                      style={{
+                        color: T.inkSoft,
+                        fontFamily: "var(--font-fraunces), Georgia, serif",
+                      }}
                     >
                       Total Value
                     </p>
                     <p
                       className="font-medium text-lg tabular-nums"
-                      style={{ color: T.ink, fontFamily: "var(--font-fraunces), Georgia, serif" }}
+                      style={{
+                        color: T.ink,
+                        fontFamily: "var(--font-fraunces), Georgia, serif",
+                      }}
                     >
                       {formatBDT(result.order.total)}
                     </p>
@@ -392,14 +438,24 @@ export default function TrackPage() {
                   <div>
                     <p
                       className="text-[9px] tracking-[0.35em] uppercase mb-1.5 flex items-center gap-2"
-                      style={{ color: T.inkSoft, fontFamily: "var(--font-fraunces), Georgia, serif" }}
+                      style={{
+                        color: T.inkSoft,
+                        fontFamily: "var(--font-fraunces), Georgia, serif",
+                      }}
                     >
-                      <User className="w-3.5 h-3.5" strokeWidth={1.5} style={{ color: T.gold }} /> 
+                      <User
+                        className="w-3.5 h-3.5"
+                        strokeWidth={1.5}
+                        style={{ color: T.gold }}
+                      />
                       Recipient
                     </p>
                     <p
                       className="font-medium"
-                      style={{ color: T.ink, fontFamily: "var(--font-fraunces), Georgia, serif" }}
+                      style={{
+                        color: T.ink,
+                        fontFamily: "var(--font-fraunces), Georgia, serif",
+                      }}
                     >
                       {result.order.customerName}
                     </p>
@@ -407,14 +463,24 @@ export default function TrackPage() {
                   <div>
                     <p
                       className="text-[9px] tracking-[0.35em] uppercase mb-1.5 flex items-center gap-2"
-                      style={{ color: T.inkSoft, fontFamily: "var(--font-fraunces), Georgia, serif" }}
+                      style={{
+                        color: T.inkSoft,
+                        fontFamily: "var(--font-fraunces), Georgia, serif",
+                      }}
                     >
-                      <Phone className="w-3.5 h-3.5" strokeWidth={1.5} style={{ color: T.gold }} /> 
+                      <Phone
+                        className="w-3.5 h-3.5"
+                        strokeWidth={1.5}
+                        style={{ color: T.gold }}
+                      />
                       Contact
                     </p>
                     <p
                       className="font-medium tabular-nums"
-                      style={{ color: T.ink, fontFamily: "var(--font-fraunces), Georgia, serif" }}
+                      style={{
+                        color: T.ink,
+                        fontFamily: "var(--font-fraunces), Georgia, serif",
+                      }}
                     >
                       {result.order.customerPhone}
                     </p>
@@ -422,23 +488,33 @@ export default function TrackPage() {
                   <div className="sm:col-span-2">
                     <p
                       className="text-[9px] tracking-[0.35em] uppercase mb-1.5 flex items-center gap-2"
-                      style={{ color: T.inkSoft, fontFamily: "var(--font-fraunces), Georgia, serif" }}
+                      style={{
+                        color: T.inkSoft,
+                        fontFamily: "var(--font-fraunces), Georgia, serif",
+                      }}
                     >
-                      <MapPin className="w-3.5 h-3.5" strokeWidth={1.5} style={{ color: T.gold }} /> 
+                      <MapPin
+                        className="w-3.5 h-3.5"
+                        strokeWidth={1.5}
+                        style={{ color: T.gold }}
+                      />
                       Destination
                     </p>
                     <p
                       className="leading-relaxed"
-                      style={{ color: T.inkSoft, fontFamily: "var(--font-fraunces), Georgia, serif" }}
+                      style={{
+                        color: T.inkSoft,
+                        fontFamily: "var(--font-fraunces), Georgia, serif",
+                      }}
                     >
                       {result.order.address}
                       {result.order.area && `, ${result.order.area}`}
                       {`, ${result.order.district}`}
                     </p>
                   </div>
-                  
+
                   {result.order.courier?.trackingCode && (
-                    <div 
+                    <div
                       className="sm:col-span-2 p-4 rounded-sm"
                       style={{
                         background: `${T.gold}08`,
@@ -447,13 +523,20 @@ export default function TrackPage() {
                     >
                       <p
                         className="text-[9px] tracking-[0.35em] uppercase mb-1.5"
-                        style={{ color: T.gold, fontFamily: "var(--font-fraunces), Georgia, serif" }}
+                        style={{
+                          color: T.gold,
+                          fontFamily: "var(--font-fraunces), Georgia, serif",
+                        }}
                       >
                         Courier Tracking Reference
                       </p>
                       <p
                         className="font-medium tabular-nums"
-                        style={{ color: T.ink, fontFamily: "var(--font-fraunces), Georgia, serif", fontSize: "15px" }}
+                        style={{
+                          color: T.ink,
+                          fontFamily: "var(--font-fraunces), Georgia, serif",
+                          fontSize: "15px",
+                        }}
                       >
                         {result.order.courier.trackingCode}
                       </p>
@@ -479,10 +562,16 @@ export default function TrackPage() {
 
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-8">
-                    <span className="h-px w-6" style={{ background: T.gold, opacity: 0.5 }} />
+                    <span
+                      className="h-px w-6"
+                      style={{ background: T.gold, opacity: 0.5 }}
+                    />
                     <h2
                       className="text-[9px] tracking-[0.4em] uppercase"
-                      style={{ color: T.gold, fontFamily: "var(--font-fraunces), Georgia, serif" }}
+                      style={{
+                        color: T.gold,
+                        fontFamily: "var(--font-fraunces), Georgia, serif",
+                      }}
                     >
                       Journey Timeline
                     </h2>
@@ -493,62 +582,79 @@ export default function TrackPage() {
                       const Icon = STATUS_ICONS[h.status] || Clock;
                       const isLast = i === result.history.length - 1;
                       const isFirst = i === 0;
-                      
+
                       return (
                         <motion.div
                           key={h._id}
                           initial={{ opacity: 0, x: -16, filter: "blur(4px)" }}
                           animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-                          transition={{ delay: i * 0.1, duration: 0.5, ease: EASE.expo }}
+                          transition={{
+                            delay: i * 0.1,
+                            duration: 0.5,
+                            ease: EASE.expo,
+                          }}
                           className="relative flex gap-5 pb-8 last:pb-0"
                         >
-                          {/* Vertical Line */}
                           {!isLast && (
-                            <div 
-                              className="absolute left-[19px] top-10 bottom-0 w-px" 
-                              style={{ background: isFirst ? T.gold : `${T.gold}30` }} 
+                            <div
+                              className="absolute left-[19px] top-10 bottom-0 w-px"
+                              style={{
+                                background: isFirst ? T.gold : `${T.gold}30`,
+                              }}
                             />
                           )}
 
-                          {/* Icon Node */}
                           <div
                             className="relative z-10 w-10 h-10 rounded-sm flex items-center justify-center flex-shrink-0"
                             style={{
                               background: isFirst ? T.gold : T.bg,
-                              border: `1px solid ${isFirst ? T.gold : `${T.gold}40`}`,
-                              boxShadow: isFirst ? `0 4px 12px -4px ${T.gold}40` : "none",
+                              border: `1px solid ${
+                                isFirst ? T.gold : `${T.gold}40`
+                              }`,
+                              boxShadow: isFirst
+                                ? `0 4px 12px -4px ${T.gold}40`
+                                : "none",
                             }}
                           >
-                            <Icon 
-                              className="w-4 h-4" 
-                              strokeWidth={1.5} 
-                              style={{ color: isFirst ? T.ink : T.inkSoft }} 
+                            <Icon
+                              className="w-4 h-4"
+                              strokeWidth={1.5}
+                              style={{ color: isFirst ? T.ink : T.inkSoft }}
                             />
                           </div>
 
-                          {/* Content */}
                           <div className="flex-1 pt-1">
                             <p
                               className="font-medium mb-1"
                               style={{
                                 color: isFirst ? T.ink : T.inkSoft,
-                                fontFamily: "var(--font-fraunces), Georgia, serif",
+                                fontFamily:
+                                  "var(--font-fraunces), Georgia, serif",
                                 fontSize: "15px",
                               }}
                             >
                               {ORDER_STATUS_LABELS_EN[h.status] || h.status}
                             </p>
                             {h.note && (
-                              <p 
-                                className="text-[13px] mb-1.5 italic" 
-                                style={{ color: T.inkSoft, fontFamily: "var(--font-fraunces), Georgia, serif" }}
+                              <p
+                                className="text-[13px] mb-1.5 italic"
+                                style={{
+                                  color: T.inkSoft,
+                                  fontFamily:
+                                    "var(--font-fraunces), Georgia, serif",
+                                }}
                               >
                                 {h.note}
                               </p>
                             )}
-                            <p 
-                              className="text-[11px] tracking-[0.15em] tabular-nums" 
-                              style={{ color: T.inkSoft, opacity: 0.7, fontFamily: "var(--font-fraunces), Georgia, serif" }}
+                            <p
+                              className="text-[11px] tracking-[0.15em] tabular-nums"
+                              style={{
+                                color: T.inkSoft,
+                                opacity: 0.7,
+                                fontFamily:
+                                  "var(--font-fraunces), Georgia, serif",
+                              }}
                             >
                               {formatDateTime(h.createdAt)}
                             </p>
