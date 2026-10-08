@@ -64,21 +64,15 @@ const FALLBACK: AnnouncementData = {
 
 /**
  * Normalize whatever the backend returns into an AnnouncementData object.
- * Accepts:
- *   - a plain string:        "🎉 Free delivery"
- *   - an object:             { text, tone, href }
- *   - legacy settings fields: { announcement, announcementTone, announcementHref }
  */
 function normalizeAnnouncement(input: any): AnnouncementData | null {
   if (!input) return null;
 
-  // Case 1: plain string
   if (typeof input === "string") {
     const t = input.trim();
     return t ? { text: t, tone: "info" } : null;
   }
 
-  // Case 2: structured object
   if (typeof input === "object") {
     const text =
       input.text ??
@@ -118,7 +112,6 @@ export function AnnouncementBar() {
       .then((s: any) => {
         if (cancelled) return;
 
-        // Try several possible field names the backend may use
         const raw =
           s?.announcementBar ??
           s?.announcement ??
@@ -127,9 +120,6 @@ export function AnnouncementBar() {
           null;
 
         const normalized = normalizeAnnouncement(raw);
-
-        // If the backend returned a full object, respect it.
-        // If it only returned a string, use it.
         setData(normalized ?? FALLBACK);
       })
       .catch(() => {
@@ -150,16 +140,9 @@ export function AnnouncementBar() {
   const tone = TONES[data.tone];
   const isLink = Boolean(data.href);
 
-  const inner = (
-    <span
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: "12px",
-        position: "relative",
-        maxWidth: "100%",
-      }}
-    >
+  // A single marquee segment (dot + ornament + text + ornament)
+  const segment = (
+    <span className="inline-flex items-center gap-6 shrink-0 whitespace-nowrap">
       {/* Glowing gold pulse dot */}
       <motion.span
         style={{
@@ -181,23 +164,36 @@ export function AnnouncementBar() {
         transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      <motion.span
-        key={data.text}
-        initial={{ opacity: 0, y: 4 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2, duration: 0.5, ease: "easeOut" }}
+      <span
         className="text-[10px] sm:text-[11px] tracking-[0.3em] uppercase font-medium"
-        style={{
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
-          maxWidth: "min(90vw, 900px)",
-        }}
+        style={{ color: tone.text }}
       >
         {data.text}
-      </motion.span>
+      </span>
+
+      {/* Decorative diamond separator */}
+      <span
+        aria-hidden
+        style={{
+          color: tone.dot,
+          fontSize: "8px",
+          opacity: 0.5,
+        }}
+      >
+        ❖
+      </span>
     </span>
   );
+
+  const wrapperProps = {
+    className: "relative block w-full",
+    style: {
+      padding: "12px 0",
+      textDecoration: "none" as const,
+      color: "inherit",
+      overflow: "hidden",
+    },
+  };
 
   return (
     <AnimatePresence>
@@ -212,48 +208,108 @@ export function AnnouncementBar() {
           damping: 28,
           mass: 0.8,
         }}
-        className="relative z-[500] overflow-hidden text-center"
+        className="relative z-[500] overflow-hidden text-center group"
         style={{
           background: tone.bg,
           borderBottom: `1px solid ${tone.border}`,
           color: tone.text,
           fontFamily: "var(--font-fraunces), Georgia, serif",
-          transition: "background 400ms ease, border-color 400ms ease, color 400ms ease",
+          transition:
+            "background 400ms ease, border-color 400ms ease, color 400ms ease",
         }}
       >
-        {/* Animated gold shimmer sweep */}
+        {/* Animated gold shimmer sweep (on top of the marquee) */}
         <motion.div
-          className="pointer-events-none absolute inset-0"
+          className="pointer-events-none absolute inset-0 z-10"
           style={{
-            background: `linear-gradient(90deg, transparent, ${T.goldBright}20, transparent)`,
+            background: `linear-gradient(90deg, transparent 0%, ${T.goldBright}18 50%, transparent 100%)`,
           }}
           animate={{ x: ["-100%", "200%"] }}
           transition={{
-            duration: 5,
+            duration: 6,
             repeat: Infinity,
             ease: "linear",
-            repeatDelay: 2,
+            repeatDelay: 3,
           }}
         />
 
-        {/* Content — a link if href is provided, otherwise a plain div */}
         {isLink ? (
-          <a
-            href={data.href}
-            className="relative block"
-            style={{
-              padding: "10px 16px",
-              textDecoration: "none",
-              color: "inherit",
-            }}
-          >
-            {inner}
+          <a href={data.href} {...wrapperProps}>
+            <div className="announcement-marquee">
+              <div className="announcement-marquee-track">
+                {segment}
+                {segment}
+                {segment}
+                {segment}
+              </div>
+            </div>
           </a>
         ) : (
-          <div className="relative" style={{ padding: "10px 16px" }}>
-            {inner}
+          <div {...wrapperProps}>
+            <div className="announcement-marquee">
+              <div className="announcement-marquee-track">
+                {segment}
+                {segment}
+                {segment}
+                {segment}
+              </div>
+            </div>
           </div>
         )}
+
+        <style jsx>{`
+          .announcement-marquee {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            mask-image: linear-gradient(
+              90deg,
+              transparent 0%,
+              black 8%,
+              black 92%,
+              transparent 100%
+            );
+            -webkit-mask-image: linear-gradient(
+              90deg,
+              transparent 0%,
+              black 8%,
+              black 92%,
+              transparent 100%
+            );
+          }
+
+          .announcement-marquee-track {
+            display: inline-flex;
+            gap: 48px;
+            width: max-content;
+            animation: announcement-scroll 40s linear infinite;
+            padding-left: 48px;
+          }
+
+          /* Pause on hover for better readability */
+          .group:hover .announcement-marquee-track {
+            animation-play-state: paused;
+          }
+
+          @keyframes announcement-scroll {
+            from {
+              transform: translateX(0);
+            }
+            to {
+              transform: translateX(-50%);
+            }
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            .announcement-marquee-track {
+              animation: none !important;
+              /* Show only one static instance */
+            }
+            .announcement-marquee-track > span:nth-child(n + 2) {
+              display: none;
+            }
+          }
+        `}</style>
       </motion.div>
     </AnimatePresence>
   );
