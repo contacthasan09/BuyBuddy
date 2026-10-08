@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -78,7 +78,7 @@ const STATUS_ICONS: Record<string, any> = {
   RETURNED: Package,
 };
 
-export default function TrackClient() {
+function TrackClient() {
   const searchParams = useSearchParams();
   const [invoice, setInvoice] = useState(searchParams?.get("invoice") || "");
   const [phone, setPhone] = useState("");
@@ -115,7 +115,6 @@ export default function TrackClient() {
       className="min-h-screen relative"
       style={{ background: T.bg, color: T.ink }}
     >
-      {/* Subtle organic grain overlay */}
       <svg
         aria-hidden
         className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.06] mix-blend-multiply"
@@ -135,7 +134,6 @@ export default function TrackClient() {
         <rect width="100%" height="100%" filter="url(#grain-track)" />
       </svg>
 
-      {/* ── Header ── */}
       <section
         className="relative border-b"
         style={{ borderColor: `${T.gold}30` }}
@@ -199,7 +197,6 @@ export default function TrackClient() {
         </div>
       </section>
 
-      {/* ── Form ── */}
       <section className="container-x py-12 md:py-16 relative z-10">
         <motion.form
           initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
@@ -213,7 +210,6 @@ export default function TrackClient() {
             boxShadow: `0 1px 0 ${T.gold}20, 0 24px 48px -24px rgba(28,22,18,0.2)`,
           }}
         >
-          {/* Inner gold hairline */}
           <div
             className="absolute inset-2 pointer-events-none rounded-sm"
             style={{ border: `0.5px solid ${T.gold}`, opacity: 0.2 }}
@@ -330,7 +326,6 @@ export default function TrackClient() {
           </motion.button>
         </motion.form>
 
-        {/* ── Error ── */}
         <AnimatePresence>
           {error && (
             <motion.div
@@ -364,7 +359,6 @@ export default function TrackClient() {
           )}
         </AnimatePresence>
 
-        {/* ── Result ── */}
         <AnimatePresence>
           {result && (
             <motion.div
@@ -373,7 +367,6 @@ export default function TrackClient() {
               transition={{ duration: 0.7, ease: EASE.expo }}
               className="max-w-3xl mt-12 space-y-6"
             >
-              {/* Order summary card */}
               <div
                 className="p-6 md:p-8 rounded-sm relative"
                 style={{
@@ -545,7 +538,6 @@ export default function TrackClient() {
                 </div>
               </div>
 
-              {/* Timeline */}
               <div
                 className="p-6 md:p-8 rounded-sm relative"
                 style={{
@@ -670,5 +662,39 @@ export default function TrackClient() {
         </AnimatePresence>
       </section>
     </div>
+  );
+}
+
+export default function TrackPage() {
+  return (
+    <Suspense
+      fallback={
+        <div
+          className="min-h-screen flex items-center justify-center"
+          style={{ background: "#EFE7D4" }}
+        >
+          <div className="text-center">
+            <div
+              className="w-10 h-10 border-2 rounded-full animate-spin mx-auto mb-4"
+              style={{
+                borderColor: "#B8935A30",
+                borderTopColor: "#B8935A",
+              }}
+            />
+            <p
+              className="text-[11px] tracking-[0.3em] uppercase"
+              style={{
+                color: "#5C4F42",
+                fontFamily: "var(--font-fraunces), Georgia, serif",
+              }}
+            >
+              Loading tracker
+            </p>
+          </div>
+        </div>
+      }
+    >
+      <TrackClient />
+    </Suspense>
   );
 }
